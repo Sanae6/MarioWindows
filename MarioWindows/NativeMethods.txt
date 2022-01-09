@@ -1,0 +1,3 @@
+SetWindowLong
+UpdateLayeredWindow
+Windows.Win32.UI.WindowsAndMessaging
