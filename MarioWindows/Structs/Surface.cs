@@ -22,7 +22,7 @@ public struct Surface {
     }
 
     public static unsafe Surface* CreateSurfaceList(Surface[] surfaces) {
-        Surface* surfaceList = (Surface*) Marshal.AllocHGlobal(Marshal.SizeOf<Surface>() * surfaces.Length);
+        Surface* surfaceList = (Surface*) Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>() * surfaces.Length);
         for (int i = 0; i < surfaces.Length; i++) Marshal.StructureToPtr(surfaces[i], (IntPtr) (surfaceList + i), false);
 
         return surfaceList;

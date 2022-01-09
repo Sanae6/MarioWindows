@@ -10,9 +10,9 @@ public static class ConstantSurfaces {
             0,
             1,
             new[] {
-                new Vector3i(1000, 0, 1000),
-                new Vector3i(1000, 0, -1000),
-                new Vector3i(-1000, 0, 1000)
+                new Vector3i(1000, 10, 1000),
+                new Vector3i(1000, 10, -1000),
+                new Vector3i(-1000, 10, 1000)
             }
         ),
         new Surface(
@@ -20,9 +20,9 @@ public static class ConstantSurfaces {
             0,
             1,
             new[] {
-                new Vector3i(-1000, 0, -1000),
-                new Vector3i(1000, 0, -1000),
-                new Vector3i(-1000, 0, 1000),
+                new Vector3i(-1000, 10, -1000),
+                new Vector3i(1000, 10, -1000),
+                new Vector3i(-1000, 10, 1000),
             }
         )
     };

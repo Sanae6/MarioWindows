@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using Windows.Win32.Foundation;
@@ -21,9 +22,9 @@ namespace MarioWindows {
                 Size = new Vector2i(800, 600),
                 Title = "Mario",
                 // This is needed to run on macos
-                Flags = ContextFlags.ForwardCompatible
+                Flags = ContextFlags.ForwardCompatible,
             });
-            HWND hwnd = (HWND) GLFW.GetWin32Window(window.WindowPtr);
+            // HWND hwnd = (HWND) GLFW.GetWin32Window(window.WindowPtr);
             // Graphics gfx = Graphics.FromHwnd(hwnd);
 
             // PInvoke.SetWindowLong(hwnd, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE, (int) (WINDOW_EX_STYLE.WS_EX_LAYERED | WINDOW_EX_STYLE.WS_EX_TOPMOST));
@@ -57,7 +58,7 @@ namespace MarioWindows {
             Sm64.sm64_global_terminate();
             byte[] textureData = new byte[4 * 704 * 64];
             Sm64.sm64_global_init(File.ReadAllBytes("baserom.us.z64"), textureData);
-            Sm64.sm64_static_surfaces_load(Surface.CreateSurfaceList(ConstantSurfaces.Vertices), 2);
+            Sm64.sm64_static_surfaces_load(Surface.CreateSurfaceList(ConstantSurfaces.Vertices), (uint) ConstantSurfaces.Vertices.Length);
             
             MarioTexture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, MarioTexture);
@@ -66,12 +67,13 @@ namespace MarioWindows {
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMinFilter.Linear);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 704, 64, 0, PixelFormat.Rgba, PixelType.UnsignedByte, textureData);
-            Mario = new MarioGl(new Vector3i(0, 1000, 0));
+            Mario = new MarioGl(new Vector3i(50, 1000, 50));
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e) {
             if (KeyboardState.IsKeyDown(Keys.Escape)) Close();
             
+            Console.WriteLine("Update");
             Mario.Update();
 
             base.OnUpdateFrame(e);
@@ -83,7 +85,7 @@ namespace MarioWindows {
             GL.ClearColor(Color.Lime);
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(45.0f, ClientSize.X / (float) ClientSize.Y, 100.0f, 20000.0f),
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), ClientSize.X / (float) ClientSize.Y, 100.0f, 20000.0f),
                     view = Matrix4.LookAt(CameraPos, Mario.Position, new Vector3(0,1,0));
             
 

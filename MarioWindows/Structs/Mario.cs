@@ -6,7 +6,7 @@ namespace MarioWindows.Structs;
 
 public abstract class Mario : IDisposable {
     protected static int MarioCount;
-    public readonly int Id;
+    public readonly uint Id;
     public unsafe MarioGeo* Geometry = (MarioGeo*) Marshal.AllocHGlobal(Marshal.SizeOf<MarioGeo>());
     public unsafe MarioInputs* Inputs = (MarioInputs*) Marshal.AllocHGlobal(Marshal.SizeOf<MarioInputs>());
     public unsafe MarioState* State = (MarioState*) Marshal.AllocHGlobal(Marshal.SizeOf<MarioState>());
@@ -14,9 +14,12 @@ public abstract class Mario : IDisposable {
 
     protected Mario(Vector3i start) {
         Id = Sm64.sm64_mario_create((short) start.X, (short) start.Y, (short) start.Z);
+        Console.WriteLine($"Created new mario {Id}");
         MarioCount++;
         unsafe {
-            // Sm64.RtlZeroMemory(Geometry, );
+            Sm64.RtlZeroMemory((IntPtr) Geometry, (UIntPtr) Marshal.SizeOf<MarioGeo>());
+            Sm64.RtlZeroMemory((IntPtr) Inputs, (UIntPtr) Marshal.SizeOf<MarioInputs>());
+            Sm64.RtlZeroMemory((IntPtr) State, (UIntPtr) Marshal.SizeOf<MarioState>());
         }
     }
 

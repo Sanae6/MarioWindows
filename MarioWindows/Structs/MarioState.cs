@@ -1,7 +1,9 @@
-﻿using OpenTK.Mathematics;
+﻿using System.Runtime.InteropServices;
+using OpenTK.Mathematics;
 
 namespace MarioWindows.Structs;
 
+[StructLayout(LayoutKind.Sequential)]
 public struct MarioState {
     public Vector3 Position;
     public Vector3 Velocity;
